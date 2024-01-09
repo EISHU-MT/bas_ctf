@@ -154,7 +154,6 @@ if bots then
 					for teamA, obj in pairs(ctf.token_flags) do
 						if teamA == team then
 							bots.Hunt(self, obj, 1.8, true)
-							core.chat_send_all("HUNTING "..Name(obj))
 						end
 					end
 					-- Scan enemies in bot view
