@@ -1,4 +1,19 @@
 -- BlockAssault CaptureTheFlag API
+local function return_nametag_color(team)
+	if team == "red" then
+		return {a=255,r=255,g=0,b=0}
+	elseif team == "blue" then
+		return {a=255,r=0,g=0,b=255}
+	elseif team == "green" then
+		return {a=255,r=0,g=255,b=0}
+	elseif team == "yellow" then
+		return {a=255,r=255,g=255,b=0}
+	end
+end
+local function d(n)
+	n.a = 100
+	return n
+end
 function ctf.get_flag_from(player, flag)
 	if bs_match.match_is_started then
 		local player_team = bs.get_player_team_css(player)
@@ -164,29 +179,28 @@ local function get_flags_of(player)
 	--end
 end
 
+
+
 CtfCallbacks.register_OnTakeFlag(function(player, flag)
-	if Player(player) then
-		Player(player):set_nametag_attributes({
-			text = Name(player),
-			color = bs.get_player_team_css(player),
-		})
-	end
+	player:set_properties({
+		nametag = Name(player),
+		nametag_bgcolor = d(return_nametag_color(flag)),
+		nametag_color = return_nametag_color(bs.get_player_team_css(player)),
+	})
 end)
 CtfCallbacks.register_OnDropFlag(function(player, flag)
-	if Player(player) then
-		Player(player):set_nametag_attributes({
-			text = "",
-			color = "",
-		})
-	end
+	player:set_properties({
+		nametag = " ",
+		nametag_bgcolor = {a=0, r=0, g=0, b=0},
+		nametag_color = {a=0,r=0,g=0,b=0},
+	})
 end)
 CtfCallbacks.register_OnWinFlag(function(player, flag)
-	if Player(player) then
-		Player(player):set_nametag_attributes({
-			text = "",
-			color = "",
-		})
-	end
+	player:set_properties({
+		nametag = " ",
+		nametag_bgcolor = {a=0, r=0, g=0, b=0},
+		nametag_color = {a=0,r=0,g=0,b=0},
+	})
 end)
 
 PvpCallbacks.RegisterFunction(function(data)
