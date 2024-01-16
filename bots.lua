@@ -80,14 +80,14 @@ if bots then
 						if not bots.queue_shot[name] then
 							bots.in_hand_weapon[self.bot_name] = to_use
 							
-							local from = bots.to_2d(self.object:get_pos())
-							local to = bots.to_2d(obj:get_pos())
-							local offset_to = {
-								x = to.x - from.x,
-								y = to.y - from.y
-							}
+							--local from = bots.to_2d(self.object:get_pos())
+							--local to = bots.to_2d(obj:get_pos())
+							--local offset_to = {
+							--	x = to.x - from.x,
+							--	y = to.y - from.y
+							--}
 							
-							local dir = math.atan2(offset_to.y, offset_to.x) - (math.pi/2)
+							--local dir = math.atan2(offset_to.y, offset_to.x) - (math.pi/2)
 							
 							local damage = itemstack:get_definition().RW_gun_capabilities.gun_damage
 							local sound = itemstack:get_definition().RW_gun_capabilities.gun_sound
@@ -105,7 +105,7 @@ if bots then
 										visual_size = {x=0.25, y=0.25},
 								})
 							end
-							self.object:set_yaw(dir)
+							--self.object:set_yaw(dir)
 						end
 					end
 				end
@@ -128,7 +128,7 @@ if bots then
 					local pos = BsEntities.GetStandPos(self)
 					local opos = maps.current_map.teams[team]
 					if vector.distance(pos, opos) > 2 then
-						if BsEntities.Timer(self, 2) then
+						if BsEntities.Timer(self, 1) then
 							local path_to_flag = bots.find_path_to(CheckPos(pos), CheckPos(opos))
 							if path_to_flag then
 								bots.assign_path_to(self, path_to_flag, 1.4)
