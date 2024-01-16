@@ -18,7 +18,7 @@ PvpMode.Mode = 2
 CtfCallbacks = {}
 CtfCallbacks["register_OnTakeFlag"] = function(function_to_run) table.insert(ctf.callbacks.OnTakeFlag, function_to_run) core.log("action", "Registered OnTakeFlag function") end
 CtfCallbacks["register_OnDropFlag"] = function(function_to_run) table.insert(ctf.callbacks.OnDropFlag, function_to_run) core.log("action", "Registered OnDropFlag function") end
-CtfCallbacks["register_OnWinFlag"] = function(function_to_run) table.insert(ctf.callbacks.OnTakeFlag, function_to_run) core.log("action", "Registered OnWinFlag function") end
+CtfCallbacks["register_OnWinFlag"] = function(function_to_run) table.insert(ctf.callbacks.OnWinFlag, function_to_run) core.log("action", "Registered OnWinFlag function") end
 -- Check Engine if available
 if not bs then
 	error("BlockAssault Engine is not found.")
