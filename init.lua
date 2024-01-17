@@ -2,6 +2,7 @@
 ctf = {
 	modpath = core.get_modpath(core.get_current_modname()),
 	token_flags = {},
+	team_of_p_has_flag_of = {},
 	callbacks = {
 		OnTakeFlag = {},
 		OnDropFlag = {},
