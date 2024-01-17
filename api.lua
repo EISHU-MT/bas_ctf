@@ -182,7 +182,14 @@ local function get_flags_of(player)
 	--end
 end
 
-
+core.register_on_leaveplayer(function(player, timed_out)
+	local name = player:get_player_name()
+	for team, pname in pairs(ctf.token_flags) do
+		if pname == name then
+			ctf.drop_flag(pname, team)
+		end
+	end
+end)
 
 CtfCallbacks.register_OnTakeFlag(function(player, flag)
 	player:set_properties({
