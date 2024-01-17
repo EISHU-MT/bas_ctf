@@ -33,6 +33,8 @@ dofile(ctf.modpath.."/bots.lua")
 minetest.register_node("bas_ctf:red_flag", {
 	drawtype = "mesh",
 	mesh = "ccm_flag.obj",
+	node_box = {type = "fixed", fixed=ctf.config.FlagColBox},
+	selection_box = {type = "fixed", fixed=ctf.config.FlagColBox},
 	tiles = {"ccm_red_flag.png"},
 	visual_scale = 0.4,
 	pointable = true,
@@ -106,6 +108,8 @@ minetest.register_node("bas_ctf:blue_flag", {
 	drawtype = "mesh",
 	mesh = "ccm_flag.obj",
 	tiles = {"ccm_blue_flag.png"},
+	node_box = {type = "fixed", fixed=ctf.config.FlagColBox},
+	selection_box = {type = "fixed", fixed=ctf.config.FlagColBox},
 	visual_scale = 0.4,
 	pointable = true,
 	light_source = 14,
@@ -174,10 +178,86 @@ minetest.register_node("bas_ctf:blue_flag", {
 	end,
 })
 
+minetest.register_node("bas_ctf:yellow_flag", {
+	drawtype = "mesh",
+	mesh = "ccm_flag.obj",
+	tiles = {"ccm_yellow_flag.png"},
+	node_box = {type = "fixed", fixed=ctf.config.FlagColBox},
+	selection_box = {type = "fixed", fixed=ctf.config.FlagColBox},
+	visual_scale = 0.4,
+	pointable = true,
+	light_source = 14,
+	sunlight_propagates = true,
+	diggable = true,
+	buildable_to = false,
+	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
+		local player = Player(clicker)
+		local name = Name(clicker)
+		if bs.get_player_team_css(name) ~= "" then
+			if bs.get_player_team_css(name) == "yellow" then
+				if bs_match.match_is_started == false or not bs_match.match_is_started then
+					core.show_formspec(name, "shop:main", Shop.ShowFormspec(bank.return_val(name)))
+				else
+					hud_events.new(player, {
+						text = "You cant trade at this moment!\nOnly in build time",
+						color = "warning",
+						quick = true,
+					})
+				end
+			else
+				local exit_value = false
+				for flag, person in pairs(ctf.token_flags) do
+					if person and Name(person) == name then
+						local ev = ctf.capture_the_flag(clicker, flag, "yellow")
+						if ev then
+							exit_value = true
+						end
+					end
+				end
+				if not exit_value then
+					hud_events.new(clicker, {
+						text = "(!) No flag to capture!",
+						color = "warning",
+						quick = false
+					})
+				end
+			end
+		end
+	end,
+	on_punch = function(pos, node, puncher, pointed_thing)
+		local player = Player(puncher)
+		local name = Name(puncher)
+		if bs.get_player_team_css(name) ~= "" then
+			if bs.get_player_team_css(name) == "yellow" then
+				local exit_value = false
+				for flag, person in pairs(ctf.token_flags) do
+					if person and Name(person) == name then
+						local ev = ctf.capture_the_flag(player, flag, "yellow")
+						if ev then
+							exit_value = true
+						end
+					end
+				end
+				if not exit_value then
+					hud_events.new(player, {
+						text = "(!) No flag to capture!",
+						color = "warning",
+						quick = false
+					})
+				end
+			else
+				ctf.get_flag_from(player, "yellow")
+			end
+		end
+	end,
+})
+
 minetest.register_node("bas_ctf:green_flag", {
 	drawtype = "mesh",
 	mesh = "ccm_flag.obj",
 	tiles = {"ccm_red_flag.png"},
+	node_box = {type = "fixed", fixed=ctf.config.FlagColBox},
+	selection_box = {type = "fixed", fixed=ctf.config.FlagColBox},
 	visual_scale = 0.4,
 	pointable = true,
 	light_source = 14,
@@ -251,6 +331,8 @@ minetest.register_node("bas_ctf:green_flag", {
 minetest.register_node("bas_ctf:green_flag_taken", {
 	drawtype = "mesh",
 	mesh = "ccm_flag_taken.obj",
+	node_box = {type = "fixed", fixed=ctf.config.TakenFlagColBox},
+	selection_box = {type = "fixed", fixed=ctf.config.TakenFlagColBox},
 	tiles = {"ccm_green_flag.png"},
 	visual_scale = 0.4,
 	pointable = true,
@@ -294,6 +376,8 @@ minetest.register_node("bas_ctf:yellow_flag_taken", {
 	drawtype = "mesh",
 	mesh = "ccm_flag_taken.obj",
 	tiles = {"ccm_yellow_flag.png"},
+	node_box = {type = "fixed", fixed=ctf.config.TakenFlagColBox},
+	selection_box = {type = "fixed", fixed=ctf.config.TakenFlagColBox},
 	visual_scale = 0.4,
 	pointable = true,
 	light_source = 14,
@@ -337,6 +421,8 @@ minetest.register_node("bas_ctf:blue_flag_taken", {
 	mesh = "ccm_flag_taken.obj",
 	tiles = {"ccm_red_flag.png"},
 	visual_scale = 0.4,
+	node_box = {type = "fixed", fixed=ctf.config.TakenFlagColBox},
+	selection_box = {type = "fixed", fixed=ctf.config.TakenFlagColBox},
 	light_source = 14,
 	pointable = true,
 	sunlight_propagates = true,
@@ -379,6 +465,8 @@ minetest.register_node("bas_ctf:red_flag_taken", {
 	mesh = "ccm_flag_taken.obj",
 	tiles = {"ccm_red_flag.png"},
 	light_source = 14,
+	node_box = {type = "fixed", fixed=ctf.config.TakenFlagColBox},
+	selection_box = {type = "fixed", fixed=ctf.config.TakenFlagColBox},
 	visual_scale = 0.4,
 	pointable = true,
 	sunlight_propagates = true,
