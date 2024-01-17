@@ -9,4 +9,4 @@ This mod will dont make conflicts with [Bots](https://EISHU-MT/bs_bots), is play
 - Modify Shop Table, for flag
 
 ## License
-Always **Mit License**
+On [LICENSE.txt](/LICENSE.txt)
