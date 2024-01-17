@@ -110,7 +110,7 @@ if bots then
 					end
 				end
 				-- Lookup for flag
-				if not ctf.bot_flag_token_up[botname] then
+				if (not ctf.bot_flag_token_up[botname]) and (not ctf.team_of_p_has_flag_of[team]) then
 					local pos = BsEntities.GetStandPos(self)
 					local opos = maps.current_map.teams[ctf.team_that_has_bot_to_attack_other[team].team]
 					if vector.distance(pos, opos) > 2 then
@@ -121,22 +121,28 @@ if bots then
 							end
 						end
 					else
-						ctf.get_flag_from(self.object, ctf.team_that_has_bot_to_attack_other[team].team)
-						ctf.bot_flag_token_up[botname] = true
+						if not ctf.team_of_p_has_flag_of[team] then
+							ctf.get_flag_from(self.object, ctf.team_that_has_bot_to_attack_other[team].team)
+							ctf.bot_flag_token_up[botname] = true
+						end
 					end
 				else
-					local pos = BsEntities.GetStandPos(self)
-					local opos = maps.current_map.teams[team]
-					if vector.distance(pos, opos) > 2 then
-						if BsEntities.Timer(self, 1) then
-							local path_to_flag = bots.find_path_to(CheckPos(pos), CheckPos(opos))
-							if path_to_flag then
-								bots.assign_path_to(self, path_to_flag, 1.4)
+					if not ctf.team_of_p_has_flag_of[team] then
+						local pos = BsEntities.GetStandPos(self)
+						local opos = maps.current_map.teams[team]
+						if vector.distance(pos, opos) > 2 then
+							if BsEntities.Timer(self, 1) then
+								local path_to_flag = bots.find_path_to(CheckPos(pos), CheckPos(opos))
+								if path_to_flag then
+									bots.assign_path_to(self, path_to_flag, 1.4)
+								end
 							end
+						else
+							ctf.capture_the_flag(self.object, ctf.team_that_has_bot_to_attack_other[team].team, team)
+							ctf.bot_flag_token_up[botname] = nil
 						end
 					else
-						ctf.capture_the_flag(self.object, ctf.team_that_has_bot_to_attack_other[team].team, team)
-						ctf.bot_flag_token_up[botname] = nil
+						Logic.OldOnStep(self)
 					end
 				end
 			else --bas_ctf:red_flag_taken
