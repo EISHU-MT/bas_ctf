@@ -23,6 +23,7 @@ function ctf.get_flag_from(player, flag)
 			quick = false
 		})
 		ctf.token_flags[flag] = player
+		ctf.team_of_p_has_flag_of[player_team] = {player=player,eteam=flag}
 		RunCallbacks(ctf.callbacks.OnTakeFlag, player, flag)
 		core.set_node(maps.current_map.teams[flag], {name = "bas_ctf:"..flag.."_flag_taken"})
 		for pname in pairs(bs.team[flag].players) do
@@ -73,6 +74,7 @@ function ctf.capture_the_flag(player, flag, player_team)
 					quick = false
 				})
 				ctf.token_flags[flag] = nil
+				ctf.team_of_p_has_flag_of[player_team] = nil
 				bs.team[flag].state = "neutral"
 				RunCallbacks(ctf.callbacks.OnWinFlag, player, flag)
 				for pname in pairs(bs.team[flag].players) do
@@ -135,6 +137,7 @@ function ctf.drop_flag(player, flag)
 				end
 			end
 			ctf.token_flags[flag] = nil
+			ctf.team_of_p_has_flag_of[bs.get_player_team_css(player)] = nil
 		end
 	end
 end
