@@ -28,6 +28,13 @@ end
 -- Strings
 
 ctfcfg.PlayerNameTagColor = Get("bctf_PlayerNameTagColor", "#00FFFF")
+ctfcfg.FlagColBox = {
+	{-0.2, -0.5, -0.2, 0.2, 2.1, 0.2}, -- Pole
+	{-1.2,  1.2, -0.1, 0.2, 2.1, 0.1} -- Flag
+}
+ctfcfg.TakenFlagColBox = {
+	{-0.2, -0.5, -0.2, 0.2, 2.1, 0.2}, -- Pole
+}
 
 -- Return Data
 
