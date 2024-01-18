@@ -114,7 +114,7 @@ if bots then
 					local pos = BsEntities.GetStandPos(self)
 					local opos = maps.current_map.teams[ctf.team_that_has_bot_to_attack_other[team].team]
 					if vector.distance(pos, opos) > 2 then
-						if BsEntities.Timer(self, 2) then
+						if BsEntities.Timer(self, 1) then
 							local path_to_flag = bots.find_path_to(CheckPos(pos), CheckPos(opos))
 							if path_to_flag then
 								bots.assign_path_to(self, path_to_flag, 1.4)
@@ -164,7 +164,7 @@ if bots then
 					end
 					-- Scan enemies in bot view
 					local detected = {}
-					for _, obj in pairs(core.get_objects_inside_radius(self.object:get_pos(), self.view_range+50)) do
+					for _, obj in pairs(core.get_objects_inside_radius(self.object:get_pos(), self.view_range+5)) do
 						if Name(obj) and Name(obj) ~= self.bot_name then
 							if obj:get_luaentity() and obj:get_luaentity().bot_name ~= self.bot_name then
 								if bots.is_in_bot_view(self, obj) then
