@@ -14,6 +14,7 @@ core.log("action", "Initializing CTF")
 config.IsDefaultGame = false
 config.EnableShopTable = false
 config.GameClass = "BA Capture The Flag"
+config.AllowPlayersModifyMaps = true
 PvpMode.Mode = 2
 -- Generate Callbacks
 CtfCallbacks = {}
