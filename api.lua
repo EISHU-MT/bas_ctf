@@ -40,11 +40,13 @@ function ctf.get_flag_from(player, flag)
 		for pname in pairs(bs.team[player_team].players) do
 			if Player(pname) then
 				if not bs.spectator[pname] then
-					hud_events.new(Player(pname), {
-						text = "(!) "..Name(player).." has enemy flag!\nGo protect him!\nFrom: "..TransformTextReadable(flag),
-						color = "success",
-						quick = false
-					})
+					if pname ~= Name(player) then
+						hud_events.new(Player(pname), {
+							text = "(!) "..Name(player).." has enemy flag!\nGo protect him!\nFrom: "..TransformTextReadable(flag),
+							color = "success",
+							quick = false
+						})
+					end
 				end
 			end
 		end
