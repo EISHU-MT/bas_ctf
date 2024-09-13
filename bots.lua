@@ -1,3 +1,5 @@
+local BotsTable = {}
+BotsTable.DelayToUpdate = {}
 if bots then
 	ctf.team_that_has_bot_to_attack_other = {
 		red = {bot=nil,team="",botname=""},
@@ -20,6 +22,13 @@ if bots then
 	end
 	function BotsLogicFunction(self)
 		if self and self.object and self.object:get_yaw() then
+			--if not BotsTable.DelayToUpdate[self.bot_name] then
+			--	BotsTable.DelayToUpdate[self.bot_name] = 0
+			--end
+			--BotsTable.DelayToUpdate[self.bot_name] = BotsTable.DelayToUpdate[self.bot_name] - self.dtime
+			--if BotsTable.DelayToUpdate[self.bot_name] <= 0 then
+			--	BotsTable.DelayToUpdate[self.bot_name] = 0
+			--end
 			if bs_match.match_is_started then
 				-- Properties
 				local botname = self.bot_name
@@ -68,12 +77,17 @@ if bots then
 						local pos = BsEntities.GetStandPos(self)
 						local opos = maps.current_map.teams[ctf.team_that_has_bot_to_attack_other[team].team]
 						if vector.distance(pos, opos) > 2 then
-							if BsEntities.Timer(self, 1) then
-								local path_to_flag = bots.find_path_to(CheckPos(pos), CheckPos(opos))
-								if path_to_flag then
-									bots.assign_path_to(self, path_to_flag, 1.9)
-								end
-							end
+							--if BsEntities.Timer(self, 2) then
+								--if BotsTable.DelayToUpdate[self.bot_name] <= 0 then
+									local path_to_flag = bots.find_path_to(CheckPos(pos), CheckPos(opos), 900, self)--bots.find_path_to(CheckPos(pos), CheckPos(opos))
+									if path_to_flag then
+										bots.assign_path_to(self, path_to_flag, 1.9, self)
+									end
+									--BotsTable.DelayToUpdate[self.bot_name] = 3
+									bots.stop_hunter[self.bot_name] = true
+									bots.direct_walk[self.bot_name] = nil
+								--end
+							--end
 						else
 							if not ctf.team_of_p_has_flag_of[team] then
 								ctf.get_flag_from(self.object, ctf.team_that_has_bot_to_attack_other[team].team)
@@ -88,12 +102,13 @@ if bots then
 							local pos = BsEntities.GetStandPos(self)
 							local opos = maps.current_map.teams[team]
 							if vector.distance(pos, opos) > 2 then
-								if BsEntities.Timer(self, 1) then
-									local path_to_flag = bots.find_path_to(CheckPos(pos), CheckPos(opos))
+								local path_to_flag = bots.find_path_to(CheckPos(pos), CheckPos(opos), 900, self)--bots.find_path_to(CheckPos(pos), CheckPos(opos))
 									if path_to_flag then
-										bots.assign_path_to(self, path_to_flag, 1.9)
+										bots.assign_path_to(self, path_to_flag, 1.9, self)
 									end
-								end
+									--BotsTable.DelayToUpdate[self.bot_name] = 3
+									bots.stop_hunter[self.bot_name] = true
+									bots.direct_walk[self.bot_name] = nil
 							else
 								bots.CancelPathTo[botname] = true
 								ctf.capture_the_flag(self.object, ctf.team_that_has_bot_to_attack_other[team].team, team)
